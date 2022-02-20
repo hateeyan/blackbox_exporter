@@ -69,6 +69,9 @@ var (
 		IPProtocolFallback: true,
 	}
 
+	// DefaultSIPProbe set default value for SIPProbe
+	DefaultSIPProbe = SIPProbe{}
+
 	// DefaultTCPProbe set default value for TCPProbe
 	DefaultTCPProbe = TCPProbe{
 		IPProtocolFallback: true,
@@ -196,6 +199,7 @@ type Module struct {
 	ICMP    ICMPProbe     `yaml:"icmp,omitempty"`
 	DNS     DNSProbe      `yaml:"dns,omitempty"`
 	GRPC    GRPCProbe     `yaml:"grpc,omitempty"`
+	SIP     SIPProbe      `yaml:"sip,omitempty"`
 }
 
 type HTTPProbe struct {
@@ -226,6 +230,8 @@ type GRPCProbe struct {
 	IPProtocolFallback  bool             `yaml:"ip_protocol_fallback,omitempty"`
 	PreferredIPProtocol string           `yaml:"preferred_ip_protocol,omitempty"`
 }
+
+type SIPProbe struct{}
 
 type HeaderMatch struct {
 	Header       string `yaml:"header,omitempty"`
@@ -341,6 +347,16 @@ func (s *HTTPProbe) UnmarshalYAML(unmarshal func(interface{}) error) error {
 func (s *GRPCProbe) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	*s = DefaultGRPCProbe
 	type plain GRPCProbe
+	if err := unmarshal((*plain)(s)); err != nil {
+		return err
+	}
+	return nil
+}
+
+// UnmarshalYAML implements the yaml.Unmarshaler interface.
+func (s *SIPProbe) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	*s = DefaultSIPProbe
+	type plain SIPProbe
 	if err := unmarshal((*plain)(s)); err != nil {
 		return err
 	}

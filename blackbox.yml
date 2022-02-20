@@ -25,6 +25,9 @@ modules:
     grpc:
       tls: false
       service: "service1"
+  sip:
+    prober: sip
+    sip:
   ssh_banner:
     prober: tcp
     tcp:
