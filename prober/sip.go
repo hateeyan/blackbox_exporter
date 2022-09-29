@@ -105,7 +105,7 @@ Content-Length: 0
 		"viaaddr":   viaaddr,
 		"viabranch": callId,
 		"fromtag":   callId,
-		"cseqnum":   strconv.Itoa(r.Int()),
+		"cseqnum":   strconv.Itoa(r.Intn(499) + 1),
 		"callid":    callId,
 		"useragent": userAgentDefaultHeader,
 	}
